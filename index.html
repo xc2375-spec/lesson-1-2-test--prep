@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lessons 1–2 Test Writing Review</title>
+  <style>
+    :root{
+      --bg:#f7f7f3;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#3f5f8f;
+      --accent2:#eaf0f8;
+      --good:#2f855a;
+      --bad:#b83232;
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:900px;
+      margin:0 auto;
+      padding:28px 18px 60px;
+    }
+    h1{
+      font-size:clamp(1.7rem,4vw,2.5rem);
+      margin:0 0 8px;
+      line-height:1.2;
+    }
+    .sub{
+      color:var(--muted);
+      margin-bottom:22px;
+      line-height:1.55;
+    }
+    .topbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:16px;
+    }
+    button, select, input{
+      font:inherit;
+    }
+    button{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    button:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+    button.primary{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
+    button.soft{
+      background:var(--accent2);
+      border-color:transparent;
+      color:var(--accent);
+      font-weight:600;
+    }
+    button.danger{
+      color:var(--bad);
+    }
+    select{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:10px;
+    }
+    .stats{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:.95rem;
+      margin-bottom:14px;
+    }
+    .pill{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 11px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+    .lesson{
+      color:var(--muted);
+      font-size:.9rem;
+      margin-bottom:14px;
+    }
+    .prompt{
+      text-align:center;
+      padding:10px 0 18px;
+    }
+    .pinyin{
+      font-size:clamp(1.8rem,5vw,2.7rem);
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+    .meaning{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
+    .hint{
+      margin-top:8px;
+      color:#8b5e34;
+      font-size:.95rem;
+    }
+    .inputrow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin:10px 0 14px;
+    }
+    #answerInput{
+      width:min(100%,420px);
+      padding:14px 16px;
+      border:2px solid var(--line);
+      border-radius:12px;
+      font-size:1.45rem;
+      text-align:center;
+      outline:none;
+    }
+    #answerInput:focus{border-color:var(--accent)}
+    .feedback{
+      min-height:30px;
+      text-align:center;
+      font-weight:700;
+      margin:4px 0 12px;
+    }
+    .feedback.good{color:var(--good)}
+    .feedback.bad{color:var(--bad)}
+    .answerBox{
+      display:none;
+      background:#fafafa;
+      border:1px dashed #cfd5dd;
+      border-radius:12px;
+      padding:14px;
+      margin:8px auto 16px;
+      max-width:520px;
+      text-align:center;
+    }
+    .answerChars{
+      font-size:2rem;
+      font-weight:700;
+      line-height:1.5;
+    }
+    .answerLabel{
+      color:var(--muted);
+      font-size:.88rem;
+      margin-top:4px;
+    }
+    .canvasWrap{
+      margin-top:22px;
+      border-top:1px solid var(--line);
+      padding-top:18px;
+    }
+    .canvasHeader{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .canvasHeader strong{font-size:1rem}
+    canvas{
+      width:100%;
+      height:260px;
+      background:#fff;
+      border:2px solid var(--line);
+      border-radius:14px;
+      touch-action:none;
+      display:block;
+    }
+    .gridnote{
+      color:var(--muted);
+      font-size:.88rem;
+      margin-top:8px;
+    }
+    .actions{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .wordlist{
+      margin-top:26px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px;
+    }
+    .wordlist summary{
+      cursor:pointer;
+      font-weight:700;
+    }
+    .words{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+    .word{
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:10px;
+      background:#fcfcfc;
+    }
+    .word strong{font-size:1.15rem}
+    .small{font-size:.88rem;color:var(--muted)}
+
+    .sectionCard{
+      margin-top:26px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .sectionCard h2{
+      margin:0 0 8px;
+      font-size:1.35rem;
+    }
+    .sectionCard p{
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .recognitionGrid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+    .recognitionItem{
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+      background:#fcfcfc;
+    }
+    .recognitionItem .hanzi{
+      font-size:1.45rem;
+      font-weight:700;
+    }
+    .grammarTable{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:.98rem;
+    }
+    .grammarTable th,.grammarTable td{
+      text-align:left;
+      vertical-align:top;
+      border-bottom:1px solid var(--line);
+      padding:12px 10px;
+      line-height:1.5;
+    }
+    .grammarTable th{
+      background:#fafafa;
+    }
+    .particle{
+      font-size:1.35rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    @media (max-width:600px){
+      .card{padding:18px}
+      canvas{height:220px}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Lessons 1–2 Test Writing Review</h1>
+  <div class="sub">
+    Practice all test words together. Look at the pinyin and meaning first, write the word on paper or in the box, then check your answer.
+    Simplified or traditional characters are both accepted.
+  </div>
+
+  <div class="topbar">
+<button class="soft" id="shuffleBtn">Shuffle</button>
+    <button id="missedBtn">Practice missed words</button>
+    <button id="restartBtn">Restart full set</button>
+  </div>
+
+  <div class="stats">
+    <div class="pill">Word <span id="currentNum">1</span>/<span id="totalNum">21</span></div>
+    <div class="pill">Correct: <span id="correctNum">0</span></div>
+    <div class="pill">Needs review: <span id="missedNum">0</span></div>
+  </div>
+
+  <div class="card">
+    <div class="prompt">
+      <div class="pinyin" id="pinyin">chángyòng</div>
+      <div class="meaning" id="meaning">commonly used</div>
+      <div class="hint">Write the Chinese word from memory.</div>
+    </div>
+
+    <div class="inputrow">
+      <input id="answerInput" autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="Type the Chinese word here" />
+      <button class="primary" id="checkBtn">Check</button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="answerBox" id="answerBox">
+      <div class="answerChars" id="answerChars"></div>
+      <div class="answerLabel">Traditional / Simplified</div>
+    </div>
+
+    <div class="canvasWrap">
+      <div class="canvasHeader">
+        <strong>Handwriting practice</strong>
+        <button id="clearCanvasBtn">Clear writing</button>
+      </div>
+      <canvas id="pad"></canvas>
+      <div class="gridnote">Tip: Say the word aloud while you write it. Then check the answer.</div>
+    </div>
+
+    <div class="actions">
+      <button id="showBtn">Show answer</button>
+      <button id="reviewBtn">Mark for review</button>
+      <button class="primary" id="nextBtn">Next word →</button>
+    </div>
+  </div>
+
+
+  <div class="sectionCard">
+    <h2>Recognition Review — Know These When You See Them</h2>
+    <p>
+      You do not need to write these from memory for this quiz, but you should be able to recognize them and know what they mean.
+    </p>
+    <div class="recognitionGrid" id="recognitionGrid"></div>
+  </div>
+
+  <div class="sectionCard">
+    <h2>Sentence-Final Particles: 嗎 / 吧 / 呢 / 噢</h2>
+    <p>Focus on the feeling and function of each particle, not just a one-word English translation.</p>
+    <table class="grammarTable">
+      <thead>
+        <tr>
+          <th>Particle</th>
+          <th>Main use</th>
+          <th>Example</th>
+          <th>What it sounds like</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="particle">嗎 / 吗<br><span class="small">ma</span></td>
+          <td>Turns a statement into a yes/no question.</td>
+          <td>你認識他嗎？<br><span class="small">Do you know him?</span></td>
+          <td>Neutral yes/no question.</td>
+        </tr>
+        <tr>
+          <td class="particle">吧<br><span class="small">ba</span></td>
+          <td>Makes a suggestion, softens a command, or shows uncertainty.</td>
+          <td>我們走吧。<br><span class="small">Let's go.</span><br><br>他是學生吧？<br><span class="small">He's a student, right?</span></td>
+          <td>“Let’s…,” “how about…,” or “probably / right?”</td>
+        </tr>
+        <tr>
+          <td class="particle">呢<br><span class="small">ne</span></td>
+          <td>Asks “what about…?” or keeps attention on an ongoing situation/topic.</td>
+          <td>我很好，你呢？<br><span class="small">I’m good. How about you?</span></td>
+          <td>“What about…?” / keeps the topic open.</td>
+        </tr>
+        <tr>
+          <td class="particle">噢<br><span class="small">ō / ò</span></td>
+          <td>Shows realization, understanding, or a reaction. It is not a regular question marker.</td>
+          <td>噢，我知道了。<br><span class="small">Oh, I see / I got it.</span></td>
+          <td>“Oh!” — realization or response.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <details class="wordlist">
+    <summary>See the full review list</summary>
+    <div class="words" id="words"></div>
+  </details>
+</div>
+
+<script>
+const vocab = [
+  {lesson:1, trad:"常用", simp:"常用", pinyin:"chángyòng", meaning:"commonly used"},
+  {lesson:1, trad:"來源", simp:"来源", pinyin:"láiyuán", meaning:"source; origin"},
+  {lesson:1, trad:"以前", simp:"以前", pinyin:"yǐqián", meaning:"before; in the past"},
+  {lesson:1, trad:"名字", simp:"名字", pinyin:"míngzi", meaning:"name"},
+  {lesson:1, trad:"意思", simp:"意思", pinyin:"yìsi", meaning:"meaning"},
+  {lesson:1, trad:"希望", simp:"希望", pinyin:"xīwàng", meaning:"to hope; hope"},
+  {lesson:1, trad:"地方", simp:"地方", pinyin:"dìfang", meaning:"place"},
+  {lesson:1, trad:"先生", simp:"先生", pinyin:"xiānsheng", meaning:"Mr.; husband; gentleman"},
+  {lesson:1, trad:"可能", simp:"可能", pinyin:"kěnéng", meaning:"possible; maybe"},
+  {lesson:1, trad:"認識", simp:"认识", pinyin:"rènshi", meaning:"to know; to become acquainted with"},
+  {lesson:1, trad:"介紹", simp:"介绍", pinyin:"jièshào", meaning:"to introduce; introduction"},
+
+  {lesson:2, trad:"家庭", simp:"家庭", pinyin:"jiātíng", meaning:"family; household"},
+  {lesson:2, trad:"一起", simp:"一起", pinyin:"yìqǐ", meaning:"together"},
+  {lesson:2, trad:"幫助", simp:"帮助", pinyin:"bāngzhù", meaning:"to help; help"},
+  {lesson:2, trad:"現在", simp:"现在", pinyin:"xiànzài", meaning:"now; at present"},
+  {lesson:2, trad:"已經", simp:"已经", pinyin:"yǐjīng", meaning:"already"},
+  {lesson:2, trad:"結婚", simp:"结婚", pinyin:"jiéhūn", meaning:"to get married"},
+  {lesson:2, trad:"問題", simp:"问题", pinyin:"wèntí", meaning:"question; problem"},
+  {lesson:2, trad:"一些", simp:"一些", pinyin:"yìxiē", meaning:"some; a few"},
+  {lesson:2, trad:"決定", simp:"决定", pinyin:"juédìng", meaning:"to decide; decision"},
+  {lesson:2, trad:"沒有", simp:"没有", pinyin:"méiyǒu", meaning:"to not have; there is/are not"}
+];
+
+
+const recognitionVocab = [
+  {trad:"比方說", simp:"比方说", pinyin:"bǐfangshuō", meaning:"for example"},
+  {trad:"動物", simp:"动物", pinyin:"dòngwù", meaning:"animal"},
+  {trad:"前面", simp:"前面", pinyin:"qiánmiàn", meaning:"in front; before"},
+  {trad:"時間", simp:"时间", pinyin:"shíjiān", meaning:"time"},
+  {trad:"高興", simp:"高兴", pinyin:"gāoxìng", meaning:"happy; glad"},
+  {trad:"家長", simp:"家长", pinyin:"jiāzhǎng", meaning:"parent / guardian"},
+  {trad:"照顧", simp:"照顾", pinyin:"zhàogù", meaning:"to take care of"},
+  {trad:"應該", simp:"应该", pinyin:"yīnggāi", meaning:"should; ought to"},
+  {trad:"著急", simp:"着急", pinyin:"zháojí", meaning:"worried; anxious"},
+  {trad:"問題", simp:"问题", pinyin:"wèntí", meaning:"question; problem"}
+];
+
+let pool = [...vocab];
+let index = 0;
+let correct = 0;
+let missed = new Set();
+
+const $ = id => document.getElementById(id);
+
+function normalize(s){
+  return s.trim().replace(/\s+/g,"");
+}
+
+function current(){
+  return pool[index] || null;
+}
+
+function render(){
+  const item = current();
+  $("totalNum").textContent = pool.length;
+  $("currentNum").textContent = pool.length ? index + 1 : 0;
+  $("correctNum").textContent = correct;
+  $("missedNum").textContent = missed.size;
+
+  $("feedback").textContent = "";
+  $("feedback").className = "feedback";
+  $("answerBox").style.display = "none";
+  $("answerInput").value = "";
+
+  if(!item){
+    $("pinyin").textContent = "Nice work!";
+    $("meaning").textContent = missed.size
+      ? "Review the words you marked or missed, then restart and try the full set again."
+      : "You have completed this review set.";
+    $("answerInput").disabled = true;
+    $("checkBtn").disabled = true;
+    return;
+  }
+
+  $("answerInput").disabled = false;
+  $("checkBtn").disabled = false;
+  $("pinyin").textContent = item.pinyin;
+  $("meaning").textContent = item.meaning;
+  clearCanvas();
+  $("answerInput").focus();
+}
+
+function showAnswer(){
+  const item = current();
+  if(!item) return;
+  $("answerChars").textContent =
+    item.trad === item.simp ? item.trad : `${item.trad} / ${item.simp}`;
+  $("answerBox").style.display = "block";
+}
+
+function check(){
+  const item = current();
+  if(!item) return;
+  const ans = normalize($("answerInput").value);
+  if(!ans){
+    $("feedback").textContent = "Write an answer first.";
+    $("feedback").className = "feedback bad";
+    return;
+  }
+  if(ans === item.trad || ans === item.simp){
+    $("feedback").textContent = "✓ Correct";
+    $("feedback").className = "feedback good";
+    correct++;
+    missed.delete(item.trad);
+    $("correctNum").textContent = correct;
+    $("missedNum").textContent = missed.size;
+    showAnswer();
+  } else {
+    $("feedback").textContent = "Not quite — check the answer and write it again.";
+    $("feedback").className = "feedback bad";
+    missed.add(item.trad);
+    $("missedNum").textContent = missed.size;
+    showAnswer();
+  }
+}
+
+function next(){
+  if(index < pool.length - 1){
+    index++;
+    render();
+  } else {
+    index = pool.length;
+    render();
+  }
+}
+
+function markReview(){
+  const item = current();
+  if(!item) return;
+  missed.add(item.trad);
+  $("missedNum").textContent = missed.size;
+  $("feedback").textContent = "Marked for review.";
+  $("feedback").className = "feedback bad";
+}
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+
+$("checkBtn").addEventListener("click", check);
+$("showBtn").addEventListener("click", showAnswer);
+$("nextBtn").addEventListener("click", next);
+$("reviewBtn").addEventListener("click", markReview);
+$("shuffleBtn").addEventListener("click", ()=>{
+  shuffle(pool);
+  index=0;
+  correct=0;
+  render();
+});
+$("missedBtn").addEventListener("click", ()=>{
+  const missedPool = vocab.filter(v=>missed.has(v.trad));
+  if(!missedPool.length){
+    $("feedback").textContent = "No missed words yet — keep going!";
+    $("feedback").className = "feedback good";
+    return;
+  }
+  pool = missedPool;
+  index = 0;
+  correct = 0;
+  render();
+});
+$("restartBtn").addEventListener("click", ()=>{
+  pool = [...vocab];
+  index=0;
+  correct=0;
+  render();
+});
+$("answerInput").addEventListener("keydown", e=>{
+  if(e.key==="Enter"){
+    if($("answerBox").style.display==="block") next();
+    else check();
+  }
+});
+
+// Full list
+$("words").innerHTML = vocab.map(v => `
+  <div class="word">
+    <strong>${v.trad === v.simp ? v.trad : `${v.trad} / ${v.simp}`}</strong>
+    <div>${v.pinyin}</div>
+    <div class="small">${v.meaning}</div>
+  </div>
+`).join("");
+
+
+$("recognitionGrid").innerHTML = recognitionVocab.map(v => `
+  <div class="recognitionItem">
+    <div class="hanzi">${v.trad === v.simp ? v.trad : `${v.trad} / ${v.simp}`}</div>
+    <div>${v.pinyin}</div>
+    <div class="small">${v.meaning}</div>
+  </div>
+`).join("");
+
+// Handwriting canvas
+const canvas = $("pad");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+
+function resizeCanvas(){
+  const rect = canvas.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  drawGrid();
+}
+
+function drawGrid(){
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  ctx.clearRect(0,0,w,h);
+  ctx.save();
+  ctx.strokeStyle = "#e8eaee";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([6,6]);
+  ctx.beginPath();
+  ctx.moveTo(w/2,0); ctx.lineTo(w/2,h);
+  ctx.moveTo(0,h/2); ctx.lineTo(w,h/2);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function clearCanvas(){
+  if(canvas.width) drawGrid();
+}
+
+function pos(e){
+  const r=canvas.getBoundingClientRect();
+  const t=e.touches ? e.touches[0] : e;
+  return {x:t.clientX-r.left, y:t.clientY-r.top};
+}
+
+function start(e){
+  drawing=true;
+  const p=pos(e);
+  ctx.beginPath();
+  ctx.moveTo(p.x,p.y);
+  e.preventDefault();
+}
+function move(e){
+  if(!drawing) return;
+  const p=pos(e);
+  ctx.strokeStyle="#111827";
+  ctx.lineWidth=4;
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+  ctx.lineTo(p.x,p.y);
+  ctx.stroke();
+  e.preventDefault();
+}
+function end(){ drawing=false; }
+
+canvas.addEventListener("mousedown", start);
+canvas.addEventListener("mousemove", move);
+window.addEventListener("mouseup", end);
+canvas.addEventListener("touchstart", start, {passive:false});
+canvas.addEventListener("touchmove", move, {passive:false});
+canvas.addEventListener("touchend", end);
+$("clearCanvasBtn").addEventListener("click", clearCanvas);
+window.addEventListener("resize", resizeCanvas);
+
+resizeCanvas();
+render();
+</script>
+</body>
+</html>
