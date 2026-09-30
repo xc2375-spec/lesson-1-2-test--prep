@@ -146,7 +146,7 @@ dialog::backdrop{background:rgba(20,15,10,.45)}
 .note{font-size:13px;color:var(--muted);margin-top:8px}
 .sec{font:600 19px/1.3 var(--kai);margin:22px 0 10px}.sec span{font:400 13px var(--sans)}
 .plist{display:grid;gap:12px}.pc{display:grid;grid-template-columns:64px 1fr;gap:4px 14px}.pc .pchar{font:52px/1 var(--kai);color:var(--accent);text-align:center}.pc .ppy{text-align:center;color:var(--muted);font-size:14px}.pc h3{margin:0;font-size:17px}.pc p{margin:4px 0}.pc .pex{font-family:var(--kai);font-size:19px}.pc .pex span{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);margin-left:36px}.pc .pno{font-size:14px;color:var(--warn)}
-.cmp{width:100%;border-collapse:collapse;font-size:15px;margin-top:6px}.cmp td{padding:8px 6px;border-top:1px solid var(--line);vertical-align:top}.cmp td:first-child{font-family:var(--kai);font-size:19px;width:52%}
+.cmp{width:100%;border-collapse:collapse;font-size:15px;margin-top:6px}.cmp td{padding:8px 6px;border-top:1px solid var(--line);vertical-align:top}.cmp td b{color:var(--accent);font-weight:600}.cmp td:first-child{font-family:var(--kai);font-size:19px;width:52%}
 .psent{font:34px/1.4 var(--kai);text-align:center;padding:14px 0 20px}.psent u{text-decoration:none;display:inline-block;min-width:1.4em;border-bottom:3px solid var(--accent);color:var(--accent)}
 .opts4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.opts4 .opt{font:32px/1.2 var(--kai)}
 @media (max-width:520px){.psent{font-size:26px}}
@@ -399,6 +399,52 @@ const GQ = [
  {t:'我想去，＿我沒有時間。',s:'我想去，＿我没有时间。',a:5,why:'"but" → 可是'},
  {t:'這個字很難，＿很有意思。',s:'这个字很难，＿很有意思。',a:5,why:'"but" → 可是'},
  {t:'我很想去，＿媽媽說不可以。',s:'我很想去，＿妈妈说不可以。',a:5,why:'"but" → 可是'}
+];
+
+/* coverbs 介詞: 在・為・跟・用・替・給 (Lesson 2) */
+const COVERBS = [
+ {c:{t:'在',s:'在'},py:'zài',name:'at; in; on (place)',
+  use:{t:'說「在哪裡」做事。',s:'说“在哪里”做事。'},
+  pat:{t:'我 + 在家 + 說中文',s:'我 + 在家 + 说中文'},
+  ex:[{t:'你在這兒做甚麼？',s:'你在这儿做什么？',en:'What are you doing here?'},{t:'我在家不常常說中文。',s:'我在家不常常说中文。',en:"I don't often speak Chinese at home."}],
+  no:{t:'地方放在動詞前面：✗ 我說中文在家　✓ 我在家說中文',s:'地方放在动词前面：✗ 我说中文在家　✓ 我在家说中文'}},
+ {c:{t:'為',s:'为'},py:'wèi',name:'for; for the sake of; because of',
+  use:{t:'為了誰、為了什麼事。常和「着急」一起用。',s:'为了谁、为了什么事。常和“着急”一起用。'},
+  pat:{t:'父母 + 為孩子的事 + 着急',s:'父母 + 为孩子的事 + 着急'},
+  ex:[{t:'你為甚麼事着急啊？',s:'你为什么事着急啊？',en:'What are you worried about?'},{t:'父母常常為孩子的事着急。',s:'父母常常为孩子的事着急。',en:"Parents often worry about their children's affairs."}],
+  no:{t:'這裡讀 wèi（第四聲）。「為甚麼」= why',s:'这里读 wèi（第四声）。“为什么”= why'}},
+ {c:{t:'跟',s:'跟'},py:'gēn',name:'with; to',
+  use:{t:'和誰一起做、對誰說、從誰那裡學。',s:'和谁一起做、对谁说、从谁那里学。'},
+  pat:{t:'我 + 跟媽媽 + 學中文',s:'我 + 跟妈妈 + 学中文'},
+  ex:[{t:'你跟我說說。',s:'你跟我说说。',en:'Tell me about it.'},{t:'他想跟小王結婚。',s:'他想跟小王结婚。',en:'He wants to marry Xiao Wang.'},{t:'我可以跟我媽媽學中文。',s:'我可以跟我妈妈学中文。',en:'I can learn Chinese from my mom.'}],
+  no:{t:'✗ 他想結婚小王　✓ 他想跟小王結婚',s:'✗ 他想结婚小王　✓ 他想跟小王结婚'}},
+ {c:{t:'用',s:'用'},py:'yòng',name:'with; by means of; using',
+  use:{t:'用什麼東西（錢、筆、中文…）做事。',s:'用什么东西（钱、笔、中文…）做事。'},
+  pat:{t:'你 + 用自己的錢 + 買',s:'你 + 用自己的钱 + 买'},
+  ex:[{t:'你用我的錢買吧。',s:'你用我的钱买吧。',en:'Use my money to buy it.'},{t:'你應該用自己的錢買。',s:'你应该用自己的钱买。',en:'You should buy it with your own money.'}],
+  no:{t:'後面是東西（工具），不是人',s:'后面是东西（工具），不是人'}},
+ {c:{t:'替',s:'替'},py:'tì',name:'for; in place of (do it instead of someone)',
+  use:{t:'本來是你要做的事，我替你做。',s:'本来是你要做的事，我替你做。'},
+  pat:{t:'請你 + 替我 + 問問他',s:'请你 + 替我 + 问问他'},
+  ex:[{t:'你替我說吧。',s:'你替我说吧。',en:'You say it for me.'},{t:'請你替我問問他。',s:'请你替我问问他。',en:'Please ask him for me.'},{t:'我不能替你學。',s:'我不能替你学。',en:"I can't learn it for you."}],
+  no:{t:'學習、考試不能「替」別人做！',s:'学习、考试不能“替”别人做！'}},
+ {c:{t:'給',s:'给'},py:'gěi',name:'for; for the benefit of',
+  use:{t:'做事，讓別人得到好處（別人收到東西）。',s:'做事，让别人得到好处（别人收到东西）。'},
+  pat:{t:'我 + 給你 + 買一件好東西',s:'我 + 给你 + 买一件好东西'},
+  ex:[{t:'他想給我介紹一個女朋友。',s:'他想给我介绍一个女朋友。',en:'He wants to introduce a girlfriend to me.'},{t:'我要給你買一件好東西。',s:'我要给你买一件好东西。',en:"I'm going to buy you something nice."}],
+  no:{t:'給你買 = 買東西送你（你收到）；替你買 = 你沒空，我幫你去買',s:'给你买 = 买东西送你（你收到）；替你买 = 你没空，我帮你去买'}}
+];
+const CQ = [
+ {t:'父母常常＿孩子的事着急。',s:'父母常常＿孩子的事着急。',a:1,why:'為…着急 = worry about / for the sake of → 為'},
+ {t:'我＿家不常常說中文。',s:'我＿家不常常说中文。',a:0,why:'Place (at home) → 在'},
+ {t:'你能＿我介紹個女朋友嗎？',s:'你能＿我介绍个女朋友吗？',a:5,why:'For my benefit → 給我介紹'},
+ {t:'我可以＿我媽媽學中文。',s:'我可以＿我妈妈学中文。',a:2,why:'Learn from someone → 跟…學'},
+ {t:'你應該＿自己的錢買。',s:'你应该＿自己的钱买。',a:3,why:'By means of (money) → 用'},
+ {t:'他想＿小王結婚。',s:'他想＿小王结婚。',a:2,why:'Marry someone → 跟…結婚'},
+ {t:'我要＿你買一件好東西。',s:'我要＿你买一件好东西。',a:5,why:'You receive the gift → 給你買'},
+ {t:'他有時間嗎？請你＿我問問他。',s:'他有时间吗？请你＿我问问他。',a:4,why:'Do it in my place → 替我問'},
+ {t:'甚麼事啊？你能不能＿我說說？',s:'什么事啊？你能不能＿我说说？',a:2,why:'Talk with / tell someone → 跟…說'},
+ {t:'學中文是你自己的事，我不能＿你學。',s:'学中文是你自己的事，我不能＿你学。',a:4,why:'Instead of you → 替你學'}
 ];
 
 /* ---------- helpers ---------- */
@@ -802,13 +848,14 @@ document.addEventListener('keydown', e => {
 
 /* ---------- grammar tab: particles + small words ---------- */
 const P = {mode:'learn', which:'p', list:[], i:0, score:0, answered:false};
-const SETS = {p:{opts:PARTICLES, pool:PQ, cls:'opts4'}, g:{opts:GRAMMAR, pool:GQ, cls:'opts6'}};
-function startP(which){ P.mode = 'quiz'; P.which = which; P.list = shuffle(SETS[which].pool); P.i = 0; P.score = 0; renderPQ(); window.scrollTo(0, 0); }
+const SETS = {p:{opts:PARTICLES, pool:PQ, cls:'opts4'}, g:{opts:GRAMMAR, pool:GQ, cls:'opts6'}, c:{opts:COVERBS, pool:CQ, cls:'opts6', ordered:true}};
+function startP(which){ P.mode = 'quiz'; P.which = which; P.list = SETS[which].ordered ? SETS[which].pool.slice() : shuffle(SETS[which].pool); P.i = 0; P.score = 0; renderPQ(); window.scrollTo(0, 0); }
 function cardHTML(p, sc){
   return `<div class="card pc">
     <div><div class="pchar">${p.c[sc]}</div><div class="ppy">${p.py}</div></div>
     <div><h3>${esc(p.name)}</h3><p>${esc(p.use[sc])}</p>
-      ${p.pat ? `<p class="pat">${esc(sc === 's' ? p.pat.replace('們','们').replace('動詞','动词').replace('媽媽','妈妈').replace('給','给').replace('書','书').replace('喜歡','喜欢').replace('會','会') : p.pat)}</p>` : ''}
+      ${p.pat && typeof p.pat === 'object' ? `<p class="pat">${esc(p.pat[sc])}</p>` : ''}
+      ${p.pat && typeof p.pat === 'string' ? `<p class="pat">${esc(sc === 's' ? p.pat.replace('們','们').replace('動詞','动词').replace('媽媽','妈妈').replace('給','给').replace('書','书').replace('喜歡','喜欢').replace('會','会') : p.pat)}</p>` : ''}
       ${p.ex.map(e => `<p class="pex"><button class="spk" style="width:30px;height:30px" data-say="${esc(e[sc])}">${SPK}</button> ${e[sc]} <span>${esc(e.en)}</span></p>`).join('')}
       <p class="pno">${esc(p.no[sc])}</p></div></div>`;
 }
@@ -847,10 +894,28 @@ function renderPart(){
   <div class="plist" style="margin-top:12px">${GRAMMAR.map(p => cardHTML(p, sc)).join('')}</div>
   <div class="card" style="margin-top:12px;text-align:center">
     <p style="margin:0 0 12px">也・都・給・不・只・可是 — fill in the blank (${GQ.length})</p>
-    <button class="btn primary" id="gStart">小詞練習 Practice</button></div>`;
+    <button class="btn primary" id="gStart">小詞練習 Practice</button></div>
+
+  <h2 class="sec" style="margin-top:34px">三、介詞 在・為・跟・用・替・給 <span class="muted">(Lesson 2)</span></h2>
+  <div class="card">
+    <p class="muted" style="margin:0 0 8px">${sc==='t'?'這些詞後面接「地方／人／東西」，整個放在動詞前面：':'这些词后面接“地方／人／东西”，整个放在动词前面：'}</p>
+    <div class="order"><span>${sc==='t'?'誰 Who':'谁 Who'}</span><b>${sc==='t'?'在／為／跟／用／替／給':'在／为／跟／用／替／给'} + ${sc==='t'?'人・地方・東西':'人・地方・东西'}</b><span>${sc==='t'?'做什麼 Verb':'做什么 Verb'}</span></div>
+    <table class="cmp">
+      <tr><td>${sc==='t'?'你<b>在這兒</b>做甚麼？':'你<b>在这儿</b>做什么？'}</td><td><b>place</b> 在: at, on, in</td></tr>
+      <tr><td>${sc==='t'?'你<b>為甚麼事</b>着急啊？':'你<b>为什么事</b>着急啊？'}</td><td><b>purpose</b> 為: for, for the sake of</td></tr>
+      <tr><td>${sc==='t'?'你<b>跟我</b>說說。':'你<b>跟我</b>说说。'}</td><td><b>association</b> 跟: with, to</td></tr>
+      <tr><td>${sc==='t'?'你<b>用我的錢</b>買吧。':'你<b>用我的钱</b>买吧。'}</td><td><b>means</b> 用: with, by means of</td></tr>
+      <tr><td>${sc==='t'?'你<b>替我</b>說吧。':'你<b>替我</b>说吧。'}</td><td><b>manner</b> 替: for; to replace</td></tr>
+      <tr><td>${sc==='t'?'他想<b>給我</b>介紹一個女朋友。':'他想<b>给我</b>介绍一个女朋友。'}</td><td><b>purpose</b> 給: for, for the benefit of</td></tr>
+    </table></div>
+  <div class="plist" style="margin-top:12px">${COVERBS.map(p => cardHTML(p, sc)).join('')}</div>
+  <div class="card" style="margin-top:12px;text-align:center">
+    <p style="margin:0 0 12px">${sc==='t'?'課本練習':'课本练习'} — ${CQ.length} ${sc==='t'?'題':'题'} (Lesson 2)</p>
+    <button class="btn primary" id="cStart">介詞練習 Practice</button></div>`;
   document.querySelectorAll('#partBox [data-say]').forEach(b => b.onclick = () => speak(b.dataset.say));
   $('#pStart').onclick = () => startP('p');
   $('#gStart').onclick = () => startP('g');
+  $('#cStart').onclick = () => startP('c');
 }
 function renderPQ(){
   P.answered = false;
